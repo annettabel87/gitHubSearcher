@@ -2,6 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 25px;
+    justify-content: center;
 }
 
 .repository {
@@ -16,6 +17,7 @@
         display: flex;
         align-items: center;
         gap: 15px;
+        flex-wrap: wrap;
     }
 
     &__img {
