@@ -10,6 +10,10 @@ class Store {
     getStore(){
         return this.store;
     };
+
+    clearStore() {
+        this.store = [];
+    }
     
 }
 
