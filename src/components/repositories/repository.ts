@@ -1,7 +1,29 @@
 import { createElement } from "../../helpers/control";
 import './repositories.scss';
 
-const repository = createElement(null, 'div', 'repository');
+export  const createRepository = (data: IRepository) => {
+    const repository = createElement(null, 'div', 'repository');    
+
+    const labelName = createElement(repository, 'span', 'repository__tex-bold', 'Название: ');
+    const name = createElement(repository, 'a', 'repository__link', data.name) as HTMLAnchorElement;
+    name.href = data.html_url;
+    name.setAttribute('target', '_blank');  
+
+    const userBlock = createElement(repository, 'div', 'repository__block');
+    const labelUser = createElement(userBlock, 'span', 'repository__tex-bold', 'Владелец: ');
+    const avatar = createElement(userBlock, 'img', 'repository__img') as HTMLImageElement;
+    avatar.src = data.owner.avatar_url;
+    const user = createElement(userBlock, 'span', 'repository__text', data.owner.login);
+
+    const descriptionBlock = createElement(repository, 'div', 'repository__block');
+    const labelDescription = createElement(descriptionBlock, 'span', 'repository__tex-bold', 'Описание: ');
+    const description = createElement(descriptionBlock, 'span', 'repository__text', data.description);
+
+    const labelPrivate = createElement(repository, 'span', 'repository__tex-bold', 'Приватность: ');
+    const isPrivate = createElement(repository, 'span', 'repository__text', data.private ? 'приватный' : 'публичный');
+    return repository;
+}
+
 
 export interface IRepository {    
     id: number,
@@ -29,4 +51,3 @@ export interface IRepository {
     updated_at: "2023-03-09T04:21:10Z",
     pushed_at: "2017-09-05T13:34:31Z",
 }
-export const user = createElement(null, 'div', 'users__item');

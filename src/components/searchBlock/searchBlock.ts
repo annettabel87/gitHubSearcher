@@ -1,4 +1,6 @@
+import { globalStore } from "../../Store";
 import { createElement } from "../../helpers/control";
+import { updateRepo } from "../repositories/repositories";
 import { IRepository } from "../repositories/repository";
 import './searchBlock.scss';
 
@@ -6,7 +8,7 @@ const BASE_URL = 'https://api.github.com/search';
 
 export const searchBlock = createElement(null, 'div', 'search');
 
-const form = createElement(searchBlock,'form', 'search__form');
+const form = createElement(searchBlock,'form', 'search__form') as HTMLFormElement;
 
 const searchInput = createElement(form, 'input','search__input') as HTMLInputElement;
 
@@ -25,6 +27,7 @@ searchInput.addEventListener('input', () => {
 form.addEventListener('submit', (e: SubmitEvent) => findUsers(e,  searchInput.value));
 
 function onInputHandler(element: HTMLInputElement, errorBlock: HTMLElement) {
+    progressBlock.innerText = '';
     const isValidly = validateForm(element.value);
     errorBlock.hidden = isValidly;
     errorBlock.innerText = 'Недостаточно символов.';
@@ -32,10 +35,12 @@ function onInputHandler(element: HTMLInputElement, errorBlock: HTMLElement) {
     submitBtn.disabled = !isValidly;
 }
 
-async function findUsers(e: SubmitEvent, userName: string) {
+async function findUsers(e: SubmitEvent, userName: string) {    
     progressBlock.innerText = '';
     e.preventDefault();
-
+    globalStore.clearStore();
+    updateRepo();
+    
     try {
         progressBlock.innerText = 'Загрузка...';
         const response = await fetch(`${BASE_URL}/repositories?q=${encodeURIComponent(userName)}&page=1&per_page=10`);
@@ -46,18 +51,19 @@ async function findUsers(e: SubmitEvent, userName: string) {
             const result = await response.json();
             if(result.total_count === 0) {
                 progressBlock.innerText = 'Ничего не найдено';
-            }       
-            
-            return result.items;             
+                form.reset();
+                return;
+            }            
+            globalStore.addData(result.items);
+            updateRepo();
+            progressBlock.innerText = '';
+            form.reset();
         }           
         
     } catch (err) {
         if(err instanceof Error)
         error.innerText = err.message;       
-    }
-    finally {
-        progressBlock.innerText = '';
-    }
+    }    
 }
 
 function validateForm(value:  string) {

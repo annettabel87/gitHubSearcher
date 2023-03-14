@@ -1,0 +1,33 @@
+.repositories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.repository {
+    max-width: 700px;
+    width: 48%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;    
+    font-size: 21px;
+
+    &__block {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    &__img {
+        width: 65px;
+        height: 65px;
+    }
+
+    &__tex-bold {
+        font-weight: 700;
+    }
+
+    &__link {
+        color: #7c7575;
+    }
+}

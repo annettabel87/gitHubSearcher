@@ -1,2 +1,24 @@
+.search {
 
+    &__input {
+        margin-right: 15px;
+        height: 39px;        
+        border-radius: 5px;
+        width: 225px;
+        font-size: 21px;
 
+        &.invalid {
+            outline: none;
+            border-color: red;
+        }
+    }
+
+    &__btn {
+        padding: 5px 15px;
+        font-size: 21px;
+    }
+}
+
+.error {
+    color: red;
+}
